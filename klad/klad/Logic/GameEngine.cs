@@ -19,6 +19,15 @@ namespace klad.Logic
             _prizeFactory = new GamePrizeFactory();
         }
 
+        public void InitializeNewRandomGame(int width, int height, string bmpPath)
+        {
+            MapGenerator generator = new MapGenerator(width, height);
+            Point p1, p2;
+            var grid = generator.Generate(out p1, out p2);
+            MapLoader.SaveToBmp(grid, p1, p2, bmpPath);
+            InitializeFromBmp(bmpPath);
+        }
+
         public void InitializeFromBmp(string path)
         {
             Point p1Start, p2Start;
@@ -37,7 +46,9 @@ namespace klad.Logic
                         case CellType.DestructibleWall: Map[x, y] = new DestructibleWall(); break;
                         case CellType.Prize: 
                             Map[x, y] = new Floor(); 
-                            Prizes.Add(_prizeFactory.CreatePrize(PrizeType.Treasure) with { X = x, Y = y }); 
+                            var p = _prizeFactory.CreatePrize(PrizeType.Treasure);
+                            p.X = x; p.Y = y; p.TextureId = 5;
+                            Prizes.Add(p); 
                             break;
                         default: Map[x, y] = new Floor(); break;
                     }
@@ -81,20 +92,12 @@ namespace klad.Logic
             }
         }
 
-        public void PlaceTempWall(int playerId)
+        public void ActionRemoveWall(int playerId)
         {
             Player p = playerId == 1 ? Player1 : Player2;
             int gx = (int)Math.Round(p.X);
             int gy = (int)Math.Round(p.Y);
-            Map.SetTemporaryWall(gx, gy);
-        }
 
-        public void PlaceTempPassage(int playerId)
-        {
-            Player p = playerId == 1 ? Player1 : Player2;
-            int gx = (int)Math.Round(p.X);
-            int gy = (int)Math.Round(p.Y);
-            
             int[] dx = { 1, -1, 0, 0 };
             int[] dy = { 0, 0, 1, -1 };
             for (int i = 0; i < 4; i++)
@@ -103,29 +106,13 @@ namespace klad.Logic
                 int ny = gy + dy[i];
                 if (nx >= 0 && nx < Map.Width && ny >= 0 && ny < Map.Height)
                 {
+                    // Если это стена для временного прохода
                     if (Map[nx, ny].CanPassage)
                     {
                         Map.SetTemporaryPassage(nx, ny);
                         break;
                     }
-                }
-            }
-        }
-
-        public void DestroyWall(int playerId)
-        {
-            Player p = playerId == 1 ? Player1 : Player2;
-            int gx = (int)Math.Round(p.X);
-            int gy = (int)Math.Round(p.Y);
-
-            int[] dx = { 1, -1, 0, 0 };
-            int[] dy = { 0, 0, 1, -1 };
-            for (int i = 0; i < 4; i++)
-            {
-                int nx = gx + dx[i];
-                int ny = gy + dy[i];
-                if (nx >= 0 && nx < Map.Width && ny >= 0 && ny < Map.Height)
-                {
+                    // Если это разрушаемая стена
                     if (Map[nx, ny].IsDestructible)
                     {
                         Map[nx, ny] = new Floor();
@@ -135,9 +122,20 @@ namespace klad.Logic
             }
         }
 
+        public void ActionPlaceWall(int playerId)
+        {
+            Player p = playerId == 1 ? Player1 : Player2;
+            int gx = (int)Math.Round(p.X);
+            int gy = (int)Math.Round(p.Y);
+            if (Map[gx, gy] is Floor)
+            {
+                Map.SetTemporaryWall(gx, gy);
+            }
+        }
+
         public void SpawnRandomPrize()
         {
-            if (_random.NextDouble() < 0.015) 
+            if (_random.NextDouble() < 0.01) 
             {
                 int x = _random.Next(Map.Width);
                 int y = _random.Next(Map.Height);
@@ -145,9 +143,7 @@ namespace klad.Logic
                 {
                     PrizeType type = _random.Next(10) < 5 ? PrizeType.SpeedBoost : PrizeType.SpeedDebuff;
                     var prize = _prizeFactory.CreatePrize(type);
-                    prize.X = x;
-                    prize.Y = y;
-                    prize.TextureId = 5; 
+                    prize.X = x; prize.Y = y; prize.TextureId = 5; 
                     Prizes.Add(prize);
                 }
             }

@@ -13,6 +13,7 @@ namespace klad
         private Renderer _renderer = null!;
         private Dictionary<Keys, bool> _keys = new Dictionary<Keys, bool>();
         private System.Windows.Forms.Timer _timer = null!;
+        private string _mapPath = "";
 
         public Form1()
         {
@@ -22,7 +23,7 @@ namespace klad
 
         private void InitializeGame()
         {
-            this.Text = "Кладоискатель - 2 Players";
+            this.Text = "Кладоискатель - 2 Players (F/G vs Num2/Num1)";
             this.ClientSize = new Size(800, 600);
 
             _glControl = new GLControl();
@@ -38,55 +39,16 @@ namespace klad
             this.Controls.Add(_glControl);
 
             _game = new GameEngine();
-            
-            // Путь к BMP карте
             string mapsDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Maps");
             Directory.CreateDirectory(mapsDir);
-            string mapPath = Path.Combine(mapsDir, "level1.bmp");
+            _mapPath = Path.Combine(mapsDir, "level1.bmp");
             
-            // Если карты нет, создаем тестовую по ТЗ
-            if (!File.Exists(mapPath))
-            {
-                CreateDefaultBmp(mapPath);
-            }
-
-            _game.InitializeFromBmp(mapPath);
+            _game.InitializeNewRandomGame(21, 21, _mapPath);
 
             _timer = new System.Windows.Forms.Timer();
-            _timer.Interval = 16; // ~60 FPS
+            _timer.Interval = 16;
             _timer.Tick += GameLoop;
             _timer.Start();
-        }
-
-        private void CreateDefaultBmp(string path)
-        {
-            using (Bitmap bmp = new Bitmap(21, 21))
-            {
-                using (var g = System.Drawing.Graphics.FromImage(bmp))
-                {
-                    g.Clear(Color.Lime); // Салатовый фон (проходимая)
-                    
-                    // Зеленые стены по периметру
-                    Pen greenPen = new Pen(Color.Green);
-                    g.DrawRectangle(greenPen, 0, 0, 20, 20);
-
-                    // Коричневые (разрушаемые)
-                    bmp.SetPixel(5, 5, Color.Brown);
-                    bmp.SetPixel(6, 5, Color.Brown);
-                    
-                    // Красные (проходные)
-                    bmp.SetPixel(10, 0, Color.Red);
-                    bmp.SetPixel(0, 10, Color.Red);
-                    
-                    // Желтые (сокровища/призы)
-                    bmp.SetPixel(10, 10, Color.Yellow);
-                    
-                    // Стартовые позиции (спец цвета для MapLoader)
-                    bmp.SetPixel(1, 1, Color.Magenta);
-                    bmp.SetPixel(19, 19, Color.Cyan);
-                }
-                bmp.Save(path);
-            }
         }
 
         private void GlControl_Load(object? sender, EventArgs e)
@@ -116,13 +78,14 @@ namespace klad
         private void GameLoop(object? sender, EventArgs e)
         {
             UpdateInput();
-            _game.Update(0.016f); // 16ms
+            _game.Update(0.016f);
             
             if (_game.IsGameOver())
             {
                 _timer.Stop();
-                MessageBox.Show($"Game Over! Winner: {_game.GetWinner()}\nScores: P1: {_game.Player1.Score}, P2: {_game.Player2.Score}");
-                _game.InitializeFromBmp(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Maps", "level1.bmp"));
+                MessageBox.Show($"Игра окончена! Победитель: {_game.GetWinner()}\nСчёт: P1: {_game.Player1.Score}, P2: {_game.Player2.Score}");
+                _game.InitializeNewRandomGame(21, 21, _mapPath);
+                _renderer.Resize(_glControl.Width, _glControl.Height, _game.Map.Width, _game.Map.Height);
                 _timer.Start();
             }
 
@@ -137,7 +100,7 @@ namespace klad
             if (_keys.ContainsKey(Keys.A) && _keys[Keys.A]) _game.MovePlayer(1, -1, 0);
             if (_keys.ContainsKey(Keys.D) && _keys[Keys.D]) _game.MovePlayer(1, 1, 0);
 
-            // Player 2 (Arrows)
+            // Player 2 (Arrows - корректное управление)
             if (_keys.ContainsKey(Keys.Up) && _keys[Keys.Up]) _game.MovePlayer(2, 0, -1);
             if (_keys.ContainsKey(Keys.Down) && _keys[Keys.Down]) _game.MovePlayer(2, 0, 1);
             if (_keys.ContainsKey(Keys.Left) && _keys[Keys.Left]) _game.MovePlayer(2, -1, 0);
@@ -147,14 +110,12 @@ namespace klad
         private void HandleActionKeys(Keys key)
         {
             // Player 1 actions
-            if (key == Keys.Q) _game.PlaceTempPassage(1);
-            if (key == Keys.E) _game.PlaceTempWall(1);
-            if (key == Keys.F) _game.DestroyWall(1);
+            if (key == Keys.F) _game.ActionRemoveWall(1); // Убрать
+            if (key == Keys.G) _game.ActionPlaceWall(1);  // Поставить
 
             // Player 2 actions
-            if (key == Keys.NumPad1 || key == Keys.D1) _game.PlaceTempPassage(2);
-            if (key == Keys.NumPad2 || key == Keys.D2) _game.PlaceTempWall(2);
-            if (key == Keys.NumPad3 || key == Keys.D3) _game.DestroyWall(2);
+            if (key == Keys.NumPad2 || key == Keys.D2) _game.ActionRemoveWall(2); // Убрать
+            if (key == Keys.NumPad1 || key == Keys.D1) _game.ActionPlaceWall(2);  // Поставить
         }
     }
 }

@@ -44,7 +44,7 @@ namespace klad.Logic
                         case CellType.DestructibleWall:
                             maze[x, y] = new DestructibleWall();
                             break;
-                        case CellType.Treasure:
+                        case CellType.Prize:
                             maze[x, y] = new Floor();
                             prizes.Add(new Treasure { X = x, Y = y, TextureId = 5 });
                             break;
