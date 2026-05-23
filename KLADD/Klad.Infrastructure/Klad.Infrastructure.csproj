@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="OpenTK" Version="3.3.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Klad.Core\Klad.Core.csproj" />
+  </ItemGroup>
+</Project>

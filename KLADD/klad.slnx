@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Klad.App/Klad.App.csproj" />
+  <Project Path="Klad.Core/Klad.Core.csproj" />
+  <Project Path="Klad.Infrastructure/Klad.Infrastructure.csproj" />
+  <Project Path="Klad.Tests/Klad.Tests.csproj" />
+</Solution>
