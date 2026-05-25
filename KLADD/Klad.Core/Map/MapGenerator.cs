@@ -8,7 +8,6 @@ namespace Klad.Core.Map
     {
         private Random _random = new Random();
         private int _width, _height;
-
         public MapGenerator(int width, int height)
         {
             _width = width % 2 == 0 ? width + 1 : width;
@@ -23,7 +22,7 @@ namespace Klad.Core.Map
                     grid[x, y] = RawCellType.SolidWall;
 
             GeneratePath(grid, 1, 1);
-            
+
             p1 = new Point(1, 1);
             p2 = new Point(_width - 2, _height - 2);
             grid[p1.X, p1.Y] = RawCellType.Empty;
@@ -91,5 +90,3 @@ namespace Klad.Core.Map
         }
     }
 }
-
-

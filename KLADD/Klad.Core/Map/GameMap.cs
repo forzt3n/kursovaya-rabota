@@ -7,20 +7,13 @@ using Klad.Core.Decorators;
 
 namespace Klad.Core.Map
 {
-    public class TempEffect
-    {
-        public int X { get; set; }
-        public int Y { get; set; }
-        public float TimeLeft { get; set; }
-        public bool Visible => TimeLeft > 1.0f || (int)(TimeLeft * 10) % 2 == 0;
-    }
 
     public class GameMap : IMap
     {
         public int Width { get; }
         public int Height { get; }
         public IMazeElement[,] Grid { get; }
-        
+
         private readonly List<TempEffect> _effects = new();
 
         public GameMap(int width, int height)
@@ -43,7 +36,7 @@ namespace Klad.Core.Map
                     if (Grid[effect.X, effect.Y] is ElementDecorator decorator)
                     {
                         Grid[effect.X, effect.Y] = decorator.GetInner();
-                        
+
                         if (!Grid[effect.X, effect.Y].IsWalkable)
                         {
                             foreach (var p in players)
@@ -88,7 +81,7 @@ namespace Klad.Core.Map
             int x2 = (int)Math.Floor(x + 1 - margin);
             int y2 = (int)Math.Floor(y + 1 - margin);
 
-            return IsCellWalkable(x1, y1) && IsCellWalkable(x2, y1) && 
+            return IsCellWalkable(x1, y1) && IsCellWalkable(x2, y1) &&
                    IsCellWalkable(x1, y2) && IsCellWalkable(x2, y2);
         }
 
@@ -110,7 +103,6 @@ namespace Klad.Core.Map
                 ApplyTemporaryEffect(x, y, 4.0f, inner => new TemporaryWallDecorator(inner));
             }
         }
-
         public void OnInteract(int x, int y)
         {
             if (x < 0 || x >= Width || y < 0 || y >= Height) return;

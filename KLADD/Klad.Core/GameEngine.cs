@@ -12,7 +12,7 @@ namespace Klad.Core
     {
         private IGameState _currentState = null!;
         public IGameState CurrentState => _currentState;
-        
+
         public string CurrentWinner { get; private set; } = "";
         public GameMap Map { get; private set; } = null!;
         public IPlayer Player1 { get; private set; } = null!;
@@ -42,6 +42,7 @@ namespace Klad.Core
             Player2 = p2;
             Prizes = prizes;
 
+
             if (_currentState == null || _currentState is GameOverState)
             {
                 SetState(new MenuState(this, _input));
@@ -61,8 +62,10 @@ namespace Klad.Core
 
         public bool IsGameOver()
         {
+
             if (!Prizes.Any(pr => pr is Treasure))
             {
+
                 CurrentWinner = Player1.Score > Player2.Score ? "Игрок 1" : "Игрок 2";
                 if (Player1.Score == Player2.Score) CurrentWinner = "Ничья";
                 return true;

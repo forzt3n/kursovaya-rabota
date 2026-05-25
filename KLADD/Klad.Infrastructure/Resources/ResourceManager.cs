@@ -30,7 +30,7 @@ namespace Klad.Infrastructure.Resources
             _textures[TextureId.Debuff] = LoadTexture(Path.Combine(_spriteDir, "Debuff.png"), bgColor);
             _textures[TextureId.Player1] = LoadTexture(Path.Combine(_spriteDir, "FPlayer.png"), bgColor);
             _textures[TextureId.Player2] = LoadTexture(Path.Combine(_spriteDir, "SPlayer.png"), bgColor);
-            
+
             _textures[TextureId.MenuPlay] = LoadTextTexture("PLAY", Color.White, Color.Transparent);
             _textures[TextureId.MenuQuit] = LoadTextTexture("QUIT", Color.White, Color.Transparent);
         }

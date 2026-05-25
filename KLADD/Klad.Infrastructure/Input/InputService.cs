@@ -4,6 +4,7 @@ namespace Klad.Infrastructure.Input
 {
     public class InputService : IInputService
     {
+
         private readonly Dictionary<GameKey, List<Keys>> _keyMapping = new()
         {
             { GameKey.Up, new() { Keys.W } },

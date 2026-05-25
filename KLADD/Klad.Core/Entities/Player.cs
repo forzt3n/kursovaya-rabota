@@ -11,30 +11,25 @@ namespace Klad.Core.Entities
         public float SpeedMultiplier { get; set; } = 1.0f;
         public int Score { get; set; }
         public TextureId TextureId { get; set; }
-
         public Vector2 Direction { get; set; } = new Vector2(0, 1);
-
         public Player(int id)
         {
             Id = id;
         }
 
         public virtual float CurrentSpeed => BaseSpeed * SpeedMultiplier;
-
         public virtual void Move(IMap map, Vector2 moveDir)
         {
             if (moveDir != Vector2.Zero) Direction = moveDir;
 
             float speed = CurrentSpeed;
 
-            // Пытаемся подвинуться только по X
             Vector2 nextX = new Vector2(Position.X + moveDir.X * speed, Position.Y);
             if (map.IsPassable(nextX.X, nextX.Y))
             {
                 Position = nextX;
             }
 
-            // Пытаемся подвинуться только по Y
             Vector2 nextY = new Vector2(Position.X, Position.Y + moveDir.Y * speed);
             if (map.IsPassable(nextY.X, nextY.Y))
             {

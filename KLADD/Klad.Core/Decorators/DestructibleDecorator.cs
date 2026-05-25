@@ -10,7 +10,6 @@ namespace Klad.Core.Decorators
 
         public override void OnInteract(IMap map, int x, int y)
         {
-            // Logic to break the wall
             map.SetCell(x, y, new Floor());
         }
     }

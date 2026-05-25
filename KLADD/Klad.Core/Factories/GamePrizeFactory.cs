@@ -10,7 +10,7 @@ namespace Klad.Core.Factories
             switch (type)
             {
                 case PrizeType.Treasure:
-                    return new Treasure { TextureId = TextureId.Treasure }; 
+                    return new Treasure { TextureId = TextureId.Treasure };
                 case PrizeType.SpeedBoost:
                     return new SpeedBoost { TextureId = TextureId.Boost };
                 case PrizeType.SpeedDebuff:

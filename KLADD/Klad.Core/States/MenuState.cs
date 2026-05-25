@@ -4,6 +4,7 @@ namespace Klad.Core.States
     {
         private readonly GameEngine _engine;
         private readonly IInputService _input;
+
         public int Selection { get; private set; } = 0;
 
         public MenuState(GameEngine engine, IInputService input)
@@ -16,9 +17,9 @@ namespace Klad.Core.States
 
         public void HandleInput()
         {
-            if (_input.IsKeyDown(GameKey.Up) || _input.IsKeyDown(GameKey.P2_Up)) 
+            if (_input.IsKeyDown(GameKey.Up) || _input.IsKeyDown(GameKey.P2_Up))
                 Selection = 0;
-            if (_input.IsKeyDown(GameKey.Down) || _input.IsKeyDown(GameKey.P2_Down)) 
+            if (_input.IsKeyDown(GameKey.Down) || _input.IsKeyDown(GameKey.P2_Down))
                 Selection = 1;
 
             if (_input.IsKeyDown(GameKey.Enter) || _input.IsKeyDown(GameKey.Space) || _input.IsKeyDown(GameKey.Action1) || _input.IsKeyDown(GameKey.P2_Action1))

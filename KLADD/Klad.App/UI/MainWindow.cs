@@ -31,7 +31,7 @@ namespace Klad.App.UI
 
         private void InitializeGame()
         {
-            this.Text = "Кладоискатель - 2 Players";
+            this.Text = "Клад";
             this.ClientSize = new Size(800, 650);
 
             _glControl = new GLControl();
@@ -39,11 +39,11 @@ namespace Klad.App.UI
             _glControl.Load += GlControl_Load;
             _glControl.Paint += GlControl_Paint;
             _glControl.Resize += GlControl_Resize;
-            
-            _glControl.PreviewKeyDown += (s, e) => e.IsInputKey = true; 
+
+            _glControl.PreviewKeyDown += (s, e) => e.IsInputKey = true;
             _glControl.KeyDown += (s, e) => _inputService.UpdateKey(e.KeyCode, true);
             _glControl.KeyUp += (s, e) => _inputService.UpdateKey(e.KeyCode, false);
-            
+
             this.KeyDown += (s, e) => _inputService.UpdateKey(e.KeyCode, true);
             this.KeyUp += (s, e) => _inputService.UpdateKey(e.KeyCode, false);
 
@@ -55,7 +55,7 @@ namespace Klad.App.UI
             _timer = new System.Windows.Forms.Timer();
             _timer.Interval = 16;
             _timer.Tick += GameLoop;
-            
+
             _stopwatch.Start();
             _timer.Start();
         }

@@ -14,7 +14,6 @@ namespace Klad.Core.States
             _engine = engine;
             _input = input;
         }
-
         public void Update(float dt)
         {
             _engine.Map.Update(dt, _engine.Player1, _engine.Player2);
@@ -26,10 +25,8 @@ namespace Klad.Core.States
                 _engine.SetState(new GameOverState(_engine, _input));
             }
         }
-
         public void HandleInput()
         {
-            // Player 1
             Vector2 p1Move = Vector2.Zero;
             if (_input.IsKeyPressed(GameKey.Up)) p1Move.Y -= 1;
             if (_input.IsKeyPressed(GameKey.Down)) p1Move.Y += 1;
@@ -40,7 +37,6 @@ namespace Klad.Core.States
             if (_input.IsKeyDown(GameKey.Action1)) _engine.Player1.ActionBreakWall(_engine.Map);
             if (_input.IsKeyDown(GameKey.Action2)) _engine.Player1.ActionPlaceWall(_engine.Map);
 
-            // Player 2
             Vector2 p2Move = Vector2.Zero;
             if (_input.IsKeyPressed(GameKey.P2_Up)) p2Move.Y -= 1;
             if (_input.IsKeyPressed(GameKey.P2_Down)) p2Move.Y += 1;
@@ -56,13 +52,12 @@ namespace Klad.Core.States
                 _engine.SetState(new MenuState(_engine, _input));
             }
         }
-
         public void Render(IRenderer renderer)
         {
-            // Сначала рисуем мир
+
             renderer.RenderGame(_engine);
 
-            // В конце рисуем интерфейс (HUD), чтобы он был поверх всего
+
             renderer.RenderHUD(_engine.Player1, _engine.Player2, _engine.Map.Width);
         }
     }

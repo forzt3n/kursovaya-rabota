@@ -34,7 +34,7 @@ namespace Klad.Infrastructure.Graphics
                 for (int y = 0; y < game.Map.Height; y++)
                 {
                     if (!game.Map.IsVisible(x, y)) continue;
-                    
+
                     DrawRect(new Klad.Core.Rectangle(x, y, 1, 1), TextureId.Empty);
 
                     IMazeElement cell = game.Map.Grid[x, y];
@@ -49,7 +49,7 @@ namespace Klad.Infrastructure.Graphics
             {
                 DrawRect(new Klad.Core.Rectangle(p.X, p.Y, 1, 1), p.TextureId);
             }
-            
+
             DrawRect(new Klad.Core.Rectangle(game.Player1.Position.X, game.Player1.Position.Y, 1, 1), game.Player1.TextureId);
             DrawRect(new Klad.Core.Rectangle(game.Player2.Position.X, game.Player2.Position.Y, 1, 1), game.Player2.TextureId);
         }
@@ -142,15 +142,15 @@ namespace Klad.Infrastructure.Graphics
 
         public void RenderHUD(IPlayer p1, IPlayer p2, int mw)
         {
-            float barWidth = 6.0f; // Ширина плашки
-            float barHeight = 0.8f; // Высота плашки
-            float padding = 0.2f;   // Отступ от краев экрана
+            float barWidth = 6.0f;
+            float barHeight = 0.8f;
+            float padding = 0.2f;
 
-            // --- Плашка Игрока 1 (Слева) ---
+
             Klad.Core.Rectangle rect1 = new Klad.Core.Rectangle(padding, padding, barWidth, barHeight);
             DrawHUDBar(rect1, $"Игрок 1: Очки: {p1.Score}", Color.Cyan);
 
-            // --- Плашка Игрока 2 (Справа) ---
+
             float x2 = mw - barWidth - padding;
             Klad.Core.Rectangle rect2 = new Klad.Core.Rectangle(x2, padding, barWidth, barHeight);
             DrawHUDBar(rect2, $"Игрок 2: Очки: {p2.Score}", Color.OrangeRed);
@@ -158,9 +158,9 @@ namespace Klad.Infrastructure.Graphics
 
         private void DrawHUDBar(Klad.Core.Rectangle rect, string text, Color textColor)
         {
-            // 1. Рисуем темную полупрозрачную подложку
+
             GL.Disable(EnableCap.Texture2D);
-            GL.Color4(0f, 0f, 0f, 0.6f); // Черный с 60% прозрачностью
+            GL.Color4(0f, 0f, 0f, 0.6f);
             GL.Begin(PrimitiveType.Quads);
             GL.Vertex2(rect.X, rect.Y);
             GL.Vertex2(rect.X + rect.Width, rect.Y);
@@ -168,14 +168,12 @@ namespace Klad.Infrastructure.Graphics
             GL.Vertex2(rect.X, rect.Y + rect.Height);
             GL.End();
             GL.Enable(EnableCap.Texture2D);
-            GL.Color4(1f, 1f, 1f, 1f); // Сбрасываем цвет в белый для текстур
+            GL.Color4(1f, 1f, 1f, 1f);
 
-            // 2. Рисуем текст
-            // Чтобы текст не растягивался, используем чуть меньший размер внутри плашки
             int textId = _resourceManager.GetTextTexture(text, textColor);
             GL.BindTexture(TextureTarget.Texture2D, textId);
             GL.Begin(PrimitiveType.Quads);
-            // Делаем небольшие отступы для текста внутри плашки
+
             float tx = rect.X + 0.2f;
             float ty = rect.Y + 0.1f;
             float tw = rect.Width - 0.4f;

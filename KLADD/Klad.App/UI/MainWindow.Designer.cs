@@ -3,6 +3,7 @@ namespace Klad.App.UI
     partial class MainWindow
     {
         private System.ComponentModel.IContainer components = null;
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -11,6 +12,7 @@ namespace Klad.App.UI
             }
             base.Dispose(disposing);
         }
+
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
@@ -20,5 +22,3 @@ namespace Klad.App.UI
         }
     }
 }
-
-

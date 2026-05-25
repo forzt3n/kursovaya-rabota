@@ -55,7 +55,7 @@ namespace Klad.Core.Factories
                         {
                             RawCellType raw = MapExporter.GetCellFromColor(c);
                             map.Grid[x, y] = CreateElement(raw);
-                            
+
                             if (raw == RawCellType.TreasureMarker)
                             {
                                 prizes.Add(CreatePrize(PrizeType.Treasure, x, y));
@@ -81,7 +81,7 @@ namespace Klad.Core.Factories
             MapGenerator gen = new MapGenerator(width, height);
             Point p1Pos, p2Pos;
             var grid = gen.Generate(out p1Pos, out p2Pos);
-            
+
             GameMap map = new GameMap(width, height);
             prizes = new List<Prize>();
 

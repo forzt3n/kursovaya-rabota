@@ -23,7 +23,7 @@ namespace Klad.Tests
             var gen = new MapGenerator(21, 21);
             Point p1, p2;
             var grid = gen.Generate(out p1, out p2);
-            
+
             Assert.Equal(21, grid.GetLength(0));
             Assert.Equal(21, grid.GetLength(1));
         }
@@ -59,9 +59,9 @@ namespace Klad.Tests
             var map = new GameMap(10, 10);
             map.Grid[5, 5] = new Floor();
             map.TryPlaceWall(1, 5, 5);
-            
-            map.Update(4.1f); 
-            
+
+            map.Update(4.1f);
+
             Assert.True(map.Grid[5, 5] is Floor);
         }
 
@@ -86,11 +86,11 @@ namespace Klad.Tests
         {
             var map = new GameMap(10, 10);
             map.Grid[5, 5] = new Floor();
-            map.TryPlaceWall(1, 5, 5); 
-            
+            map.TryPlaceWall(1, 5, 5);
+
             Assert.True(map.IsVisible(5, 5));
-      
-            map.Update(0.9f); 
+
+            map.Update(0.9f);
             Assert.True(map.IsVisible(5, 5));
         }
 
@@ -99,7 +99,7 @@ namespace Klad.Tests
         {
             var engine = new GameEngine(new SimpleInputService());
             engine.Initialize(21, 21);
-            engine.Prizes.Clear(); 
+            engine.Prizes.Clear();
             Assert.True(engine.IsGameOver());
         }
 
@@ -117,7 +117,7 @@ namespace Klad.Tests
             var map = new GameMap(10, 10);
             map.Grid[5, 5] = new Floor();
             map.TryPlaceWall(1, 5, 5);
-            map.TryPlaceWall(2, 5, 5); 
+            map.TryPlaceWall(2, 5, 5);
             Assert.True(map.Grid[5, 5] is TemporaryWallDecorator);
         }
 
@@ -126,8 +126,8 @@ namespace Klad.Tests
         {
             var player = new Player(1);
             float baseSpeed = player.CurrentSpeed;
-            player.SpeedMultiplier = 2.0f; 
-            
+            player.SpeedMultiplier = 2.0f;
+
             Assert.Equal(baseSpeed * 2.0f, player.CurrentSpeed);
         }
 
@@ -137,10 +137,10 @@ namespace Klad.Tests
             var map = new GameMap(10, 10);
             map.Grid[5, 5] = new Floor();
             map.Grid[6, 6] = new Floor();
-            
+
             map.TryPlaceWall(1, 5, 5);
             Assert.True(map.Grid[5, 5] is TemporaryWallDecorator);
-            
+
             map.TryPlaceWall(1, 6, 6);
             Assert.False(map.Grid[6, 6] is TemporaryWallDecorator);
             Assert.True(map.Grid[6, 6] is Floor);

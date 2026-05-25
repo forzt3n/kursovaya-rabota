@@ -56,7 +56,7 @@ namespace Klad.Core.Map
                             bmp.SetPixel(x, y, GetColorForCell(grid[x, y]));
                         }
                     }
-                    
+
                     bmp.SetPixel(p1.X, p1.Y, Color.Red);
                     bmp.SetPixel(p2.X, p2.Y, Color.Green);
 

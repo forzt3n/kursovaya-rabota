@@ -21,7 +21,6 @@ namespace Klad.Core.States
                 _engine.SetState(new MenuState(_engine, _input));
             }
         }
-
         public void Render(IRenderer renderer)
         {
             renderer.RenderGame(_engine);

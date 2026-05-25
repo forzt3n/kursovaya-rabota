@@ -1,5 +1,6 @@
 namespace Klad.App
 {
+
     internal static class Program
     {
         [STAThread]
@@ -10,4 +11,3 @@ namespace Klad.App
         }
     }
 }
-
